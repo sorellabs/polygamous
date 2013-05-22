@@ -48,7 +48,7 @@ platforms by the use of shims. Just include [es5-shim][] :3
 
 [es5-shim]: https://github.com/kriskowal/es5-shim
 
-[![browser support](https://ci.testling.com/killdream/athena.png)](http://ci.testling.com/killdream/athena)
+[![browser support](https://ci.testling.com/killdream/polygamous.png)](http://ci.testling.com/killdream/polygamous)
 
 
 ## Tests
