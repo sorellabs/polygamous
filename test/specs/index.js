@@ -11,7 +11,6 @@ module.exports = [spec('polygamous()', function(it, spec) {
     assert(typeof m.when == 'function')
     assert(typeof m.fallback == 'function')
     assert(typeof m.remove == 'function')
-    assert(typeof m.prefer == 'function')
   })
 
   it('Given no function, should treat dispatch as identity.', function() {
