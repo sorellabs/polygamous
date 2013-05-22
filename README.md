@@ -61,7 +61,7 @@ For the browser:
 
     $ npm install -g brofist-browser
     $ make test
-    $ brofist-browser serve build/test/specs
+    $ brofist-browser serve test/specs
     # Then point your browsers to the URL on yer console.
 
 
