@@ -65,10 +65,10 @@ function method(dispatch) {
 
 
   function makeMethod(f) {
-    f.when    = when
-    f.default = _default
-    f.remove  = remove
-    f.prefer  = prefer
+    f.when     = when
+    f.fallback = _default
+    f.remove   = remove
+    f.prefer   = prefer
 
     return f
   }

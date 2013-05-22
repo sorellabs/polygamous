@@ -9,7 +9,7 @@ module.exports = [spec('polygamous()', function(it, spec) {
     var m = poly()
     assert(typeof m == 'function')
     assert(typeof m.when == 'function')
-    assert(typeof m.default == 'function')
+    assert(typeof m.fallback == 'function')
     assert(typeof m.remove == 'function')
     assert(typeof m.prefer == 'function')
   })
@@ -56,7 +56,7 @@ module.exports = [spec('polygamous()', function(it, spec) {
     it('Should add a baseline to the method.', function() {
       var m = poly()
       m.when(1, function(){ return 1 })
-      m.default(function(){ return 0 })
+      m.fallback(function(){ return 0 })
 
       assert(m(1) == 1)
       assert(m(2) == 0)

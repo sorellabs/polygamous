@@ -16,7 +16,7 @@ var method = require('polygamous')
 var fib = method()
             .when(0, function(n){ return 0 })
             .when(1, function(n){ return 1 })
-            .default(function(n){ return fib(n - 1) + fib(n - 2) })
+            .fallback(function(n){ return fib(n - 1) + fib(n - 2) })
             
 fib(8) // => 21
 ```
@@ -96,13 +96,13 @@ matches `a`.
 when: @method => A, (B... -> C) -> method
 ```
 
-### `method:default(f)`
+### `method:fallback(f)`
 
 Adds a baseline branch for the method, which is executed if all other branches
 fail to match the dispatch value.
 
 ```hs
-default: @method => (A... -> B) -> method
+fallback: @method => (A... -> B) -> method
 ```
 
 ### `method:remove(a)`
