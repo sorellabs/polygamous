@@ -96,6 +96,8 @@ matches `a`.
 when: @method => A, (B... -> C) -> method
 ```
 
+Adding a condition that already exists will throw an `ambiguous-branch` error.
+
 ### `method:fallback(f)`
 
 Adds a baseline branch for the method, which is executed if all other branches
@@ -111,14 +113,6 @@ Removes the branch that has `a` as its evaluation condition.
 
 ```hs
 remove: @method => A -> method
-```
-
-### `method:prefer(a, b)`
-
-Makes the method consider `b` for all values of `a`, when there's a conflict.
-
-```hs
-prefer: @method => A, B -> method
 ```
 
 

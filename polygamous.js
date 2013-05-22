@@ -34,17 +34,23 @@ var equal = require('deep-equal')
 function identity(a) { return a }
 
 function noBranchFor(a) {
-  var e = new Error('No branch responds to "' + a + '"')
+  var e = new Error('No branch responds to: ' + a)
   e.name = 'no-branch-error'
   return e
 }
 
-function findBranch(value, as, baseline) {
-  var i = as.length
-  while (i--)
-    if (equal(value, as[i].condition)) return as[i].code
+function ambiguousBranch(a) {
+  var e = new Error('Another branch is already responding to: ' + a)
+  e.name = 'ambiguous-branch'
+  return e
+}
 
-  return baseline
+function branchMatching(value, branches) {
+  var i = branches.length
+  while (i--)
+    if (equal(value, branches[i].condition))  return branches[i]
+
+  return { condition: null, code: null }
 }
 
 
@@ -58,7 +64,7 @@ function method(dispatch) {
 
   return makeMethod(function() {
     var value  = dispatch.apply(null, arguments)
-    var branch = findBranch(value, branches, baseline)
+    var branch = branchMatching(value, branches).code || baseline
 
     return branch.apply(null, arguments)
   })
@@ -68,12 +74,13 @@ function method(dispatch) {
     f.when     = when
     f.fallback = _default
     f.remove   = remove
-    f.prefer   = prefer
 
     return f
   }
 
   function when(condition, f) {
+    if (branchMatching(condition))  throw ambiguousBranch(condition)
+
     branches.push({ condition: condition, code: f })
     return this
   }
@@ -88,10 +95,6 @@ function method(dispatch) {
                                  return !equal(condition, a.condition)
                                })
     return this
-  }
-
-  function prefer(condition, b) {
-
   }
 }
 
