@@ -41,7 +41,7 @@ function noBranchFor(a) {
 
 function ambiguousBranch(a) {
   var e = new Error('Another branch is already responding to: ' + a)
-  e.name = 'ambiguous-branch'
+  e.name = 'ambiguous-branch-error'
   return e
 }
 

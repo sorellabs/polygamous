@@ -49,6 +49,13 @@ module.exports = [spec('polygamous()', function(it, spec) {
       assert(m(1) == 1)
       assert(m(2) == 2)
     })
+
+    it('If a branch exists for a condition, should throw an error.', function() {
+      var m = poly()
+      m.when(1, function(){ return 1 })
+
+      assert.throws(function(){ m.when(1, m) }, /ambiguous-branch-error/)
+    })
   })
 
   spec('default(f)', function(it) {
