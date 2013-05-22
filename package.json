@@ -1,0 +1,35 @@
+{
+  "author": "Quildreen \"Sorella\" Motta <quildreen@gmail.com>",
+  "name": "polygamous",
+  "description": "Clojure-style multi-methods for JavaScript.",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/killdream/polygamous.git"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "main": "polygamous.js",
+  "licence": "MIT",
+  "readmeFilename": "README.md",
+  "testling": {
+    "files": "build/test/tap.js",
+    "browsers": [
+      "ie/6..latest",
+      "chrome/20..latest",
+      "firefox/15..latest",
+      "safari/latest",
+      "opera/11.0..latest",
+      "iphone/6",
+      "ipad/6"
+    ]
+  },
+  "keywords": [
+    "multi-method",
+    "ad-hoc",
+    "polymorphism",
+    "functional",
+    "dispatch"
+  ]
+}
