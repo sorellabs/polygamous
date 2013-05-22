@@ -14,9 +14,9 @@ through a dispatch function — which is identity by default.
 ```js
 var method = require('polygamous')
 var fib = method()
-            .when(0, function(a){ return 0 })
-            .when(1, function(a){ return 1 })
-            .default(function(a){ return fib(n - 1) + fib(n - 2) })
+            .when(0, function(n){ return 0 })
+            .when(1, function(n){ return 1 })
+            .default(function(n){ return fib(n - 1) + fib(n - 2) })
             
 fib(8) // => 21
 ```
