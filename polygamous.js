@@ -79,7 +79,7 @@ function method(dispatch) {
   }
 
   function when(condition, f) {
-    if (branchMatching(condition))  throw ambiguousBranch(condition)
+    if (branchMatching(condition, branches).code)  throw ambiguousBranch(condition)
 
     branches.push({ condition: condition, code: f })
     return this
