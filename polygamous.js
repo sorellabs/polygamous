@@ -29,22 +29,55 @@
 var equal = require('deep-equal')
 
 
-// -- Helpers ----------------------------------------------------------
+// -- Interfaces -------------------------------------------------------
 
-function identity(a) { return a }
+// ### Type branch A
+//
+// Represents each computational branch in a multi-method.
+//
+// :: { condition: A, code: (B... -> C) }
 
+
+// -- Error factories --------------------------------------------------
+
+// ### Function noBranchFor
+//
+// Signaled when a dispatch value matches no branches.
+//
+// :: A -> error A
 function noBranchFor(a) {
   var e = new Error('No branch responds to: ' + a)
   e.name = 'no-branch-error'
   return e
 }
 
+// ### Function ambiguousBranch
+//
+// Signaled when branches have equivalent evaluation conditions.
+//
+// :: A -> error A
 function ambiguousBranch(a) {
   var e = new Error('Another branch is already responding to: ' + a)
   e.name = 'ambiguous-branch-error'
   return e
 }
 
+
+// -- Helpers ----------------------------------------------------------
+
+// ### Function identity
+//
+// The identity function.
+//
+// :: A -> A
+function identity(a) { return a }
+
+
+// ### Function branchMatching
+//
+// Returns the branch matching a dispatch value.
+//
+// :: A, [branch A] -> maybe (branch A)
 function branchMatching(value, branches) {
   var i = branches.length
   while (i--)
@@ -56,6 +89,11 @@ function branchMatching(value, branches) {
 
 // -- Core implementation ----------------------------------------------
 
+// ### Function method
+//
+// Constructs a multi-method.
+//
+// :: (A... -> B) -> method
 function method(dispatch) {
   var branches = []
   var baseline = function(a){ throw noBranchFor(a) }
@@ -70,14 +108,24 @@ function method(dispatch) {
   })
 
 
+  // #### Function makeMethod
+  //
+  // Adds modification methods to a multi-method.
+  //
+  // :: method -> method
   function makeMethod(f) {
     f.when     = when
-    f.fallback = _default
+    f.fallback = fallback
     f.remove   = remove
 
     return f
   }
 
+  // ### Function when
+  //
+  // Adds a branch to a multi-method.
+  //
+  // :: @method => A, (B... -> C) -> method
   function when(condition, f) {
     if (branchMatching(condition, branches).code)  throw ambiguousBranch(condition)
 
@@ -85,11 +133,22 @@ function method(dispatch) {
     return this
   }
 
-  function _default(f) {
+  // ### Function fallback
+  //
+  // Adds a baseline branch, which is evaluated if no other branches
+  // match a given dispatch value.
+  //
+  // :: @method => (A... -> B) -> method
+  function fallback(f) {
     baseline = f
     return this
   }
 
+  // ### Function remove
+  //
+  // Removes a branch from the multi-method.
+  //
+  // :: @method => A -> method
   function remove(condition) {
     branches = branches.filter(function(a) {
                                  return !equal(condition, a.condition)
