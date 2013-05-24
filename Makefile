@@ -1,14 +1,9 @@
-targets := polygamous.umd.js
-bin = $(shell npm bin)
-browserify := $(bin)/browserify polygamous.js
+bin							:= $(shell npm bin)
+browserify			:= $(bin)/browserify polygamous.js
 
-dist/$(targets): dist
-	$(browserify) --standalone polygamous > $@
-
-dist:
-	mkdir dist
-
-bundle: dist/polygamous.umd.js
+bundle:
+	mkdir -p dist
+	$(browserify) --standalone polygamous > dist/polygamous.umd.js
 
 clean:
 	rm -rf dist
