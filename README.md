@@ -1,4 +1,4 @@
-Polygamous [![Build Status](https://travis-ci.org/killdream/polygamous.png)](https://travis-ci.org/killdream/polygamous) ![Dependencies Status](https://david-dm.org/killdream/polygamous.png)
+Polygamous [![Build Status](https://travis-ci.org/robotlolita/polygamous.png)](https://travis-ci.org/robotlolita/polygamous) ![Dependencies Status](https://david-dm.org/robotlolita/polygamous.png)
 ==========
 
 Polygamous is a library that implements [Clojure][]-style run-time polymorphism
@@ -32,7 +32,7 @@ browser):
 If you **really** want to continue suffering with old and terrible module
 systems (or use no module system at all), you can run `make bundle` yourself:
 
-    $ git clone git://github.com/killdream/polygamous
+    $ git clone git://github.com/robotlolita/polygamous
     $ cd polygamous
     $ npm install
     $ make bundle
@@ -48,7 +48,7 @@ platforms by the use of shims. Just include [es5-shim][] :3
 
 [es5-shim]: https://github.com/kriskowal/es5-shim
 
-[![browser support](https://ci.testling.com/killdream/polygamous.png)](http://ci.testling.com/killdream/polygamous)
+[![browser support](https://ci.testling.com/robotlolita/polygamous.png)](http://ci.testling.com/robotlolita/polygamous)
 
 
 ## Tests
@@ -119,4 +119,4 @@ remove: @method => A -> method
 
 ## Licence
 
-MIT/X11. i.e.: Do whatever you fucking want, bro.
+MIT/X11.
