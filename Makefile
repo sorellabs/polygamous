@@ -11,4 +11,7 @@ clean:
 test:
 	node ./test/minimal.js
 
+benchmark:
+	node ./test/benchmarks/suite.js
+
 .PHONY: test

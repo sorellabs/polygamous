@@ -26,8 +26,9 @@
 //   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // -- Dependencies -----------------------------------------------------
-var equal = require('deep-equal')
-
+var equal           = require('deep-equal')
+var clone           = Object.create
+var internalClassOf = {}.toString
 
 // -- Interfaces -------------------------------------------------------
 
@@ -86,6 +87,62 @@ function branchMatching(value, branches) {
   return { condition: null, code: null }
 }
 
+function classOf(a) {
+  return internalClassOf(a).slice(8, -1)
+}
+
+function DispatchTable() {
+  this.isValid       = true
+  this.dispatchTable = {}
+}
+
+DispatchTable.prototype = {
+  getBranch: function(key) {
+    return this.isValid?    this.dispatchTable[key]
+    :      /* otherwise */  { condition: null, code: null }
+  }
+
+, invalidate: function() {
+    this.isValid = false
+    return this
+  }
+
+, add: function(k, f) {
+    return classOf(k) === 'String'?  new StringDispatch()
+    :      classOf(k) === 'Number'?  new NumericDispatch()
+    :      /* otherwise */           this.invalidate()
+  }
+}
+
+
+function StringDispatch() {
+  DispatchTable.call(this)
+}
+
+StringDispatch.prototype = clone(DispatchTable.prototype)
+
+StringDispatch.prototype.add = function(key, fn) {
+  if (classOf(key) !== 'String') return this.invalidate()
+
+  this.dispatchTable[key] = fn
+  return this
+}
+
+
+function NumericDispatch() {
+  DispatchTable.call(this)
+  this.dispatchTable = []
+}
+
+NumericDispatch.prototype = clone(DispatchTable.prototype)
+
+NumericDispatch.prototype.add = function(i, f) {
+  if (classOf(i) !== 'Number') return this.invalidate()
+
+  this.dispatchTable[i] = f
+  return this
+}
+
 
 // -- Core implementation ----------------------------------------------
 
@@ -95,14 +152,17 @@ function branchMatching(value, branches) {
 //
 // :: (A... -> B) -> method
 function method(dispatch) {
-  var branches = []
-  var baseline = function(a){ throw noBranchFor(a) }
+  var branches      = []
+  var baseline      = function(a){ throw noBranchFor(a) }
+  var dispatchTable = new DispatchTable()
 
   dispatch = dispatch || identity
 
   return makeMethod(function() {
     var value  = dispatch.apply(null, arguments)
-    var branch = branchMatching(value, branches).code || baseline
+    var branch = dispatchTable.getBranch(value).code
+              || branchMatching(value, branches).code
+              || baseline
 
     return branch.apply(null, arguments)
   })
@@ -131,6 +191,7 @@ function method(dispatch) {
     if (branchMatching(condition, branches).code)  throw ambiguousBranch(condition)
 
     branches.push({ condition: condition, code: f })
+    dispatchTable = dispatchTable.add(condition, f)
     return this
   }
 
