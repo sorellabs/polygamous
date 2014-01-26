@@ -91,13 +91,21 @@ function classOf(a) {
   return internalClassOf(a).slice(8, -1)
 }
 
+function isPrimitive(a) {
+  return a != null
+  &&     ['String', 'Boolean', 'Number'].indexOf(classOf(a)) != -1 }
+
 function DispatchTable() {
   this.isValid       = true
   this.dispatchTable = {}
+  this.currentType   = null
 }
 
 DispatchTable.prototype = {
   getBranch: function(key) {
+    if (key == null || classOf(key) !== this.currentType)
+      return { condition: null, code: null }
+
     return this.isValid?    this.dispatchTable[key]
     :      /* otherwise */  { condition: null, code: null }
   }
@@ -108,39 +116,13 @@ DispatchTable.prototype = {
   }
 
 , add: function(k, f) {
-    return classOf(k) === 'String'?  new StringDispatch()
-    :      classOf(k) === 'Number'?  new NumericDispatch()
-    :      /* otherwise */           this.invalidate()
+    if (!isPrimitive(k))                  return this.invalidate()
+    if (this.currentType === null)        this.currentType = classOf(k)
+    if (this.currentType !== classOf(k))  return this.invalidate()
+
+    this.dispatchTable[k] = f
+    return this
   }
-}
-
-
-function StringDispatch() {
-  DispatchTable.call(this)
-}
-
-StringDispatch.prototype = clone(DispatchTable.prototype)
-
-StringDispatch.prototype.add = function(key, fn) {
-  if (classOf(key) !== 'String') return this.invalidate()
-
-  this.dispatchTable[key] = fn
-  return this
-}
-
-
-function NumericDispatch() {
-  DispatchTable.call(this)
-  this.dispatchTable = []
-}
-
-NumericDispatch.prototype = clone(DispatchTable.prototype)
-
-NumericDispatch.prototype.add = function(i, f) {
-  if (classOf(i) !== 'Number') return this.invalidate()
-
-  this.dispatchTable[i] = f
-  return this
 }
 
 
@@ -191,7 +173,7 @@ function method(dispatch) {
     if (branchMatching(condition, branches).code)  throw ambiguousBranch(condition)
 
     branches.push({ condition: condition, code: f })
-    dispatchTable = dispatchTable.add(condition, f)
+    dispatchTable.add(condition, f)
     return this
   }
 
