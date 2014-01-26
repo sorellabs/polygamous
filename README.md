@@ -115,6 +115,17 @@ Removes the branch that has `a` as its evaluation condition.
 remove: @method => A -> method
 ```
 
+### `method:clone()`
+
+Creates a new multi-method that fallbacks to this one.
+
+```hs
+clone: @method => Unit -> method
+```
+
+Do note that overwriting the fallback of the new multi-method will break the
+relationship.
+
 
 
 ## Licence

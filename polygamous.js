@@ -117,6 +117,7 @@ function method(dispatch) {
     f.when     = when
     f.fallback = fallback
     f.remove   = remove
+    f.clone    = clone
 
     return f
   }
@@ -154,6 +155,17 @@ function method(dispatch) {
                                  return !equal(condition, a.condition)
                                })
     return this
+  }
+
+  // ### Function clone
+  //
+  // Creates a new multi-method that fallsback to this one.
+  //
+  // :: @method => Unit -> method
+  function clone() {
+    var instance = method(dispatch)
+    instance.fallback(this)
+    return instance
   }
 }
 
