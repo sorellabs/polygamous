@@ -88,7 +88,7 @@ function branchMatching(value, branches) {
 }
 
 function classOf(a) {
-  return internalClassOf(a).slice(8, -1)
+  return internalClassOf.call(a).slice(8, -1)
 }
 
 function isPrimitive(a) {
