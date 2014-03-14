@@ -96,7 +96,7 @@ function isPrimitive(a) {
   &&     ['String', 'Boolean', 'Number'].indexOf(classOf(a)) != -1 }
 
 function DispatchTable() {
-  this.isValid       = true
+  this.isValid       = false
   this.dispatchTable = {}
   this.currentType   = null
 }
