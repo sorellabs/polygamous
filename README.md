@@ -1,5 +1,10 @@
-Polygamous [![Build Status](https://travis-ci.org/robotlolita/polygamous.png)](https://travis-ci.org/robotlolita/polygamous) ![Dependencies Status](https://david-dm.org/robotlolita/polygamous.png)
+Polygamous
 ==========
+
+[![Build Status](https://secure.travis-ci.org/robotlolita/polygamous.png?branch=master)](https://travis-ci.org/robotlolita/polygamous)
+[![NPM version](https://badge.fury.io/js/polygamous.png)](http://badge.fury.io/js/polygamous)
+[![Dependencies Status](https://david-dm.org/robotlolita/polygamous.png)](https://david-dm.org/robotlolita/polygamous)
+[![stable](http://hughsk.github.io/stability-badges/dist/stable.svg)](http://github.com/hughsk/stability-badges)
 
 Polygamous is a library that implements [Clojure][]-style run-time polymorphism
 through multi-methods. Methods dispatch on a single argument, based on pattern
